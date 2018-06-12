@@ -6,8 +6,6 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Twig\Environment;
 
 /**
  * Class HomeController
@@ -35,7 +33,6 @@ class HomeController extends Controller
             'lien' => $path
         ]);
     }
-
 
     /**
      * Cette méthode renvoie une vue TWIG
