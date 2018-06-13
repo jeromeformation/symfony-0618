@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Liste des produits</h1>
+
+    <ul>
+        {% for product in products %}
+            <li>{{ product.name | capitalize }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

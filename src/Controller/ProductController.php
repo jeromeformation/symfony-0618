@@ -24,12 +24,12 @@ class ProductController extends Controller
     private $products = [
         [
             "id"            => 1,
-            "name"          => 'Hamac',
+            "name"          => 'hamac',
             "description"   => 'Pour se détendre lorsqu\'il arrêtera de pleuvoir'
         ],
         [
             "id"            => 2,
-            "name"          => 'Parasol',
+            "name"          => 'parasol',
             "description"   => 'Pour faire de l\'ombre au hamac'
         ],
         [
@@ -50,7 +50,9 @@ class ProductController extends Controller
         $products = $this->products;
 
         // Renvoi des produits à la vue
-        // ##todo : créer la vue
-        // ##todo : renvoyer les produits à la vue
+        return $this->render('products/index.html.twig', [
+                'products' => $products
+            ]
+        );
     }
 }
