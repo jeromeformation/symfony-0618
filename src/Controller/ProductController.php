@@ -62,4 +62,29 @@ class ProductController extends Controller
 
         return $this->redirectToRoute('app_product_index');
     }
+
+    /**
+     * Affiche le détail d'un produit
+     * @Route("/produits/{id}", requirements={"id":"\d+"})
+     * @param int $id id du produit à trouver (URL)
+     * @return Response
+     */
+    public function show(int $id): Response
+    {
+        // Récupération du repository
+        $repository = $this->getDoctrine()
+            ->getRepository(Product::class);
+
+        // Récupération du produit
+        $product = $repository->find($id);
+
+        if(!$product) {
+            throw $this->createNotFoundException("Produit non-trouvé dans ProductController::show($id)");
+        }
+
+        return $this->render(
+            'products/show.html.twig',
+            compact('product') // ["product" => $product]
+        );
+    }
 }

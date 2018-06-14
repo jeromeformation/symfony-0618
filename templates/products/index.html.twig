@@ -5,7 +5,11 @@
 
     <ul>
         {% for product in products %}
-            <li>{{ product.name | capitalize }}</li>
+            <li>
+                {{ product.name | capitalize }}
+                <a class="btn btn-link" href="{{ path('app_product_show',{ id : product.id }) }}"
+                >Détail</a>
+            </li>
         {% endfor %}
     </ul>
 {% endblock %}

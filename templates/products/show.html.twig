@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>{{ product.name }}</h1>
+    <p class="text-muted">Vu {{ product.nbViews }} fois,
+        publié le
+        {{ product.createdAt | date('d/m/Y à H:i', 'Europe/Paris') }},
+        prix : {{ product.price }}€</p>
+    <p>{{ product.description }}</p>
+{% endblock %}
+
