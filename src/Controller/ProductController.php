@@ -66,25 +66,55 @@ class ProductController extends Controller
     /**
      * Affiche le détail d'un produit
      * @Route("/produits/{id}", requirements={"id":"\d+"})
-     * @param int $id id du produit à trouver (URL)
+     * @param Product $product
      * @return Response
      */
-    public function show(int $id): Response
+    public function show(Product $product): Response
     {
-        // Récupération du repository
-        $repository = $this->getDoctrine()
-            ->getRepository(Product::class);
-
-        // Récupération du produit
-        $product = $repository->find($id);
-
-        if(!$product) {
-            throw $this->createNotFoundException("Produit non-trouvé dans ProductController::show($id)");
-        }
-
         return $this->render(
             'products/show.html.twig',
             compact('product') // ["product" => $product]
         );
+    }
+
+    /**
+     * Modifie un produit en BDD
+     * @Route("/produits/modification/{id}")
+     * @param Product $product
+     * @return Response
+     */
+    public function update(Product $product): Response
+    {
+        // Modifications du produit
+        // ##todo : traiter le formulaire soumis
+        $nbViews = $product->getNbViews();
+        $product->setNbViews($nbViews + 1);
+
+        // Enregistrement des modifications en BDD
+        $manager = $this->getDoctrine()->getManager();
+        $manager->flush();
+
+        // On redirige vers la page de détail
+        // ##todo : afficher la vue du formulaire d'ajout
+        return $this->redirectToRoute('app_product_show', [
+            "id" => $product->getId()
+        ]);
+    }
+
+    /**
+     * Suppresion d'un produit en BDD
+     * @Route("/produits/suppression/{id}")
+     * @param Product $product
+     * @return Response
+     */
+    public function remove(Product $product): Response
+    {
+        // Suppression du produit
+        $manager = $this->getDoctrine()->getManager();
+        $manager->remove($product);
+        $manager->flush();
+
+        // On redirige vers la liste des détail
+        return $this->redirectToRoute('app_product_index');
     }
 }
