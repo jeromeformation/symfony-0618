@@ -26,12 +26,12 @@ class ProductType extends AbstractType
             ->add('isPublished', null, [
                 "label" => "Le produit doit-il être publié ?"
             ])
-            ->add('create', SubmitType::class, [
+            /*->add('create', SubmitType::class, [
                 "label" => "Créer le produit",
                 "attr" => [
                     "class" => "btn btn-success"
                 ]
-            ])
+            ])*/
         ;
     }
 

@@ -44,7 +44,7 @@ class Product
     /**
      * @ORM\Column(type="decimal", precision=10, scale=2)
      * @Assert\Type(type="float")
-     * @Assert\Regex("/^\d{1,10}([.]\d{1,2})?$/")
+     * @Assert\Regex("/^\d{1,10}([.,]\d{1,2})?$/")
      */
     private $price;
 
@@ -74,6 +74,12 @@ class Product
      * @Assert\Type(type="bool")
      */
     private $isPublished;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Categories", inversedBy="products")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $categorie;
 
     /**
      * Product constructor.
@@ -173,6 +179,18 @@ class Product
     public function setIsPublished(bool $isPublished): self
     {
         $this->isPublished = $isPublished;
+
+        return $this;
+    }
+
+    public function getCategorie(): ?Categories
+    {
+        return $this->categorie;
+    }
+
+    public function setCategorie(?Categories $categorie): self
+    {
+        $this->categorie = $categorie;
 
         return $this;
     }

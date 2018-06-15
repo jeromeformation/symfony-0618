@@ -76,8 +76,10 @@ class ProductController extends Controller
             ]);
         }
 
-        return $this->render('products/add.html.twig', [
-            'createForm' => $form->createView()
+        return $this->render('products/form.html.twig', [
+            'form'    => $form->createView(),
+            'operation'     => 'Ajout',
+            'operationBtn'  => 'Ajouter'
         ]);
     }
 
@@ -89,6 +91,14 @@ class ProductController extends Controller
      */
     public function show(Product $product): Response
     {
+        // Modifications du produit
+        $nbViews = $product->getNbViews();
+        $product->setNbViews($nbViews + 1);
+
+        // Enregistrement des modifications en BDD
+        $manager = $this->getDoctrine()->getManager();
+        $manager->flush();
+
         return $this->render(
             'products/show.html.twig',
             compact('product') // ["product" => $product]
@@ -99,23 +109,39 @@ class ProductController extends Controller
      * Modifie un produit en BDD
      * @Route("/produits/modification/{id}")
      * @param Product $product
+     * @param Request $request
      * @return Response
      */
-    public function update(Product $product): Response
+    public function update(Product $product, Request $request): Response
     {
-        // Modifications du produit
-        // ##todo : traiter le formulaire soumis
-        $nbViews = $product->getNbViews();
-        $product->setNbViews($nbViews + 1);
+        // Récupération du formulaire
+        $form = $this->createForm(ProductType::class, $product);
 
-        // Enregistrement des modifications en BDD
-        $manager = $this->getDoctrine()->getManager();
-        $manager->flush();
+        /* Traitement du formulaire */
+        // On "remplit" le formulaire avec les variables POST saisies
+        $form->handleRequest($request);
 
-        // On redirige vers la page de détail
-        // ##todo : afficher la vue du formulaire d'ajout
-        return $this->redirectToRoute('app_product_show', [
-            "id" => $product->getId()
+        if($form->isSubmitted() && $form->isValid()) {
+            // Formulaire ok
+
+            // On récupère un objet de type "Product"
+            $product = $form->getData();
+
+            // Récupération du manager de doctrine
+            $manager = $this->getDoctrine()->getManager();
+            // Enregistrement du produit en BDD
+            $manager->persist($product);
+            $manager->flush();
+
+            return $this->redirectToRoute('app_product_show', [
+                "id" => $product->getId()
+            ]);
+        }
+
+        return $this->render('products/form.html.twig', [
+            'form'    => $form->createView(),
+            'operation'     => 'Modification',
+            'operationBtn'  => 'Modifier'
         ]);
     }
 
