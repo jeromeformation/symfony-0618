@@ -4,7 +4,9 @@ namespace App\Controller;
 
 
 use App\Entity\Product;
+use App\Form\ProductType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -42,25 +44,41 @@ class ProductController extends Controller
     /**
      * Ajoute un produit en BDD
      * @Route("/produits/ajout")
+     * @param Request $request
      * @return Response
      */
-    public function add(): Response
+    public function add(Request $request): Response
     {
         // Création d'une instance de notre entité
         $product = new Product();
 
-        // Attribution de données à l'entité
-        $product->setName('Parasol');
-        $product->setDescription('Pour faire de l\'ombre au hamac');
-        $product->setPrice(155.99);
+        // Récupération du formulaire
+        $form = $this->createForm(ProductType::class, $product);
 
-        // Récupération du manager de doctrine
-        $manager = $this->getDoctrine()->getManager();
-        // Enregistrement du produit en BDD
-        $manager->persist($product);
-        $manager->flush();
+        /* Traitement du formulaire */
+        // On "remplit" le formulaire avec les variables POST saisies
+        $form->handleRequest($request);
 
-        return $this->redirectToRoute('app_product_index');
+        if($form->isSubmitted() && $form->isValid()) {
+            // Formulaire ok
+
+            // On récupère un objet de type "Product"
+            $product = $form->getData();
+
+            // Récupération du manager de doctrine
+            $manager = $this->getDoctrine()->getManager();
+            // Enregistrement du produit en BDD
+            $manager->persist($product);
+            $manager->flush();
+
+            return $this->redirectToRoute('app_product_show', [
+                "id" => $product->getId()
+            ]);
+        }
+
+        return $this->render('products/add.html.twig', [
+            'createForm' => $form->createView()
+        ]);
     }
 
     /**

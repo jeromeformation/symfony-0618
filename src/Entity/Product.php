@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
@@ -18,36 +19,59 @@ class Product
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Type(type="string")
+     * @Assert\Length(
+     *     min="3",
+     *     max="75",
+     *     minMessage="Le nom doit comporter minimum {{ limit }} caractères",
+     *     maxMessage="Le nom doit comporter maximum {{ limit }} caractères"
+     * )
      */
     private $name;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\Type(type="string")
+     * @Assert\Length(
+     *     min="3",
+     *     max="1000",
+     *     minMessage="La description doit comporter minimum {{ limit }} caractères",
+     *     maxMessage="La description doit comporter maximum {{ limit }} caractères"
+     * )
      */
     private $description;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=2)
+     * @Assert\Type(type="float")
+     * @Assert\Regex("/^\d{1,10}([.]\d{1,2})?$/")
      */
     private $price;
 
     /**
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(type="integer", options={"unsigned":true})
+     * @Assert\Type(type="integer")
+     * @Assert\Range(
+     *     min="0",
+     * )
      */
     private $nbViews;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\DateTime()
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Assert\DateTime()
      */
     private $updatedAt;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Assert\Type(type="bool")
      */
     private $isPublished;
 

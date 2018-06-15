@@ -1,3 +1,7 @@
 main {
     min-height: calc(100vh - 100px);
 }
+
+.exotic {
+    background-color: rgba(218, 165, 32, 0.17);
+}
