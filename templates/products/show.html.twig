@@ -1,7 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>{{ product.name }}</h1>
+    <h1>
+        {{ product.name }}
+        <small class="badge badge-info">{{ product.categorie.name }}</small>
+    </h1>
     <p class="text-muted">Vu {{ product.nbViews }} fois,
         publié le
         {{ product.createdAt | date('d/m/Y à H:i', 'Europe/Paris') }},

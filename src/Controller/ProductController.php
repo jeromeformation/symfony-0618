@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use App\Form\ProductType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -86,11 +87,20 @@ class ProductController extends Controller
     /**
      * Affiche le détail d'un produit
      * @Route("/produits/{id}", requirements={"id":"\d+"})
-     * @param Product $product
+     * @param int $id
      * @return Response
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function show(Product $product): Response
+    public function show(int $id): Response
     {
+        // Récupération du produit
+        $repository = $this->getDoctrine()->getRepository(Product::class);
+        $product = $repository->findOneWithCategory($id);
+
+        if(!$product) {
+            throw $this->createNotFoundException('Produit non-trouvé (show)');
+        }
+
         // Modifications du produit
         $nbViews = $product->getNbViews();
         $product->setNbViews($nbViews + 1);
@@ -99,10 +109,7 @@ class ProductController extends Controller
         $manager = $this->getDoctrine()->getManager();
         $manager->flush();
 
-        return $this->render(
-            'products/show.html.twig',
-            compact('product') // ["product" => $product]
-        );
+        return $this->render('products/show.html.twig', compact('product'));
     }
 
     /**
@@ -161,4 +168,71 @@ class ProductController extends Controller
         // On redirige vers la liste des détail
         return $this->redirectToRoute('app_product_index');
     }
+
+    /**
+     * Test des requêtes SQL
+     * @Route("/produits/sql")
+     * @return Response
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function sql(): Response
+    {
+        // Récupération du Repository
+        $repository = $this->getDoctrine()->getRepository(Product::class);
+
+        // Récupération des produits
+        $products = $repository->findBySQL();
+
+        // On affiche les produits
+        dump($products);
+        die('Test SQL');
+    }
+
+    /**
+     * Test des requêtes DQL
+     * @Route("/produits/dql")
+     * @return Response
+     */
+    public function dql(): Response
+    {
+        // Récupération du Repository
+        $repository = $this->getDoctrine()->getRepository(Product::class);
+
+        // Récupération des produits
+        $products = $repository->findByDQL();
+
+        // Affichage des produits
+        dump($products);
+        die('Test DQL');
+    }
+
+    /**
+     * Test du QueryBuilder
+     * @Route("/produits/query-builder")
+     * @return Response
+     */
+    public function queryBuilder(): Response
+    {
+        // Récupération du Repository
+        $repository = $this->getDoctrine()->getRepository(Product::class);
+
+        // Récupération des produits
+        $products = $repository->findByQueryBuilder();
+
+        // Affichage des produits
+        dump($products);
+        die('Test du QueryBuilder');
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
