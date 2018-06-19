@@ -20,6 +20,7 @@ class Categories
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @var string
      */
     private $name;
 
@@ -27,6 +28,15 @@ class Categories
      * @ORM\OneToMany(targetEntity="App\Entity\Product", mappedBy="categorie")
      */
     private $products;
+
+    /**
+     * Cette méthode permet de convertir un objet en chaîne de caractères
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->name ?? '';
+    }
 
     public function __construct()
     {
