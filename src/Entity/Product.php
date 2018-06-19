@@ -76,7 +76,7 @@ class Product
     private $isPublished;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Categories", inversedBy="products")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Categories", inversedBy="products" ,cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $categorie;

@@ -14,10 +14,11 @@ class ProductType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('categorie', EntityType::class, [
-                'class' => Categories::class,
-                'expanded' => true
-            ])
+            // Pour avoir un liste déroulante de catégories
+            ->add('categorie')
+            // Pour un formulaire imbriqué
+            //->add('categorie', CategoriesType::class)
+
             ->add('name', null, [
                 "label" => 'Nom du produit'
             ])

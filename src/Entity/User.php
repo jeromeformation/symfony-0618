@@ -3,29 +3,19 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use FOS\UserBundle\Model\User as FOSUser;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\Table(name="app_user")
  */
-class User
+class User extends FOSUser
 {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $pseudo;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $password;
+    protected $id;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\IdentityUser", cascade={"persist", "remove"})
@@ -36,30 +26,6 @@ class User
     public function getId()
     {
         return $this->id;
-    }
-
-    public function getPseudo(): ?string
-    {
-        return $this->pseudo;
-    }
-
-    public function setPseudo(string $pseudo): self
-    {
-        $this->pseudo = $pseudo;
-
-        return $this;
-    }
-
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): self
-    {
-        $this->password = $password;
-
-        return $this;
     }
 
     public function getIdentityUser(): ?IdentityUser
