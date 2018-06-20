@@ -72,6 +72,9 @@ class ProductController extends Controller
             $manager->persist($product);
             $manager->flush();
 
+            // Message de notification
+            $this->addFlash('success', 'Votre produit a bien été ajouté');
+
             return $this->redirectToRoute('app_product_show', [
                 "id" => $product->getId()
             ]);
