@@ -1,0 +1,36 @@
+{% extends "@FOSUser/layout.html.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/signin.css') }}">
+{% endblock %}
+{% block fos_user_content %}
+    {% trans_default_domain 'FOSUserBundle' %}
+    {% if error %}
+
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{ error.messageKey|trans(error.messageData, 'security') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+    {% endif %}
+    <form action="{{ path("fos_user_security_check") }}" method="post" class="form-signin">
+        <h1 class="h3 mb-3 font-weight-normal">Connexion</h1>
+        {% if csrf_token %}
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+        {% endif %}
+
+        <label for="username" class="sr-only">{{ 'security.login.username'|trans }}</label>
+        <input type="text" class="form-control" placeholder="Nom d'utilisateur" id="username" name="_username" value="{{ last_username }}" required="required" autocomplete="username" />
+
+        <label for="password" class="sr-only">{{ 'security.login.password'|trans }}</label>
+        <input type="password" class="form-control" placeholder="Mot de passe" id="password" name="_password" required="required" autocomplete="current-password" />
+
+        <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
+        <label for="remember_me">{{ 'security.login.remember_me'|trans }}</label>
+
+        <input type="submit" id="_submit" name="_submit" class="btn btn-lg btn-primary btn-block" value="{{ 'security.login.submit'|trans }}" />
+    </form>
+{% endblock fos_user_content %}
