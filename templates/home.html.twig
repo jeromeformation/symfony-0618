@@ -5,7 +5,11 @@
 
     <a href="{{ path('app_product_index') }}" class="btn btn-outline-info"
         >Liste des produits</a>
-    <a href="{{ path('app_product_add') }}" class="btn btn-outline-success"
+
+    {% if is_granted('ROLE_VENDEUR') %}
+        <a href="{{ path('app_product_add') }}" class="btn btn-outline-success"
         >Ajouter un produit</a>
+    {% endif %}
+
 {% endblock %}
 

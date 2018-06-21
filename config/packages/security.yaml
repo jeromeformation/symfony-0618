@@ -5,6 +5,7 @@ security:
         ROLE_ACHETEUR: ROLE_USER
         ROLE_VENDEUR: ROLE_ACHETEUR
         ROLE_ADMIN: ROLE_VENDEUR
+
     providers:
         fos_userbundle:
             id: fos_user.user_provider.username
@@ -20,6 +21,7 @@ security:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/produits/gestion , role: ROLE_VENDEUR }
         - { path: ^/admin, role: ROLE_ADMIN }
 
 

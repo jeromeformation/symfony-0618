@@ -44,7 +44,7 @@ class ProductController extends Controller
 
     /**
      * Ajoute un produit en BDD
-     * @Route("/produits/ajout")
+     * @Route("/produits/gestion/ajout")
      * @param Request $request
      * @return Response
      */
@@ -117,7 +117,7 @@ class ProductController extends Controller
 
     /**
      * Modifie un produit en BDD
-     * @Route("/produits/modification/{id}")
+     * @Route("/produits/gestion/modification/{id}")
      * @param Product $product
      * @param Request $request
      * @return Response
@@ -157,7 +157,7 @@ class ProductController extends Controller
 
     /**
      * Suppresion d'un produit en BDD
-     * @Route("/produits/suppression/{id}")
+     * @Route("/produits/gestion/suppression/{id}")
      * @param Product $product
      * @return Response
      */

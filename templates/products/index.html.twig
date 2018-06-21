@@ -18,8 +18,10 @@
 			  <td>{{ product.price }}</td>
 			  <td>
 				<a href="{{ path('app_product_show', { id : product.id }) }}" class="btn btn-outline-info" >Détail</a>
-				<a href="{{ path('app_product_update', {id:product.id}) }}" class="btn btn-outline-warning">Modifier</a>
-				<a href="{{ path('app_product_remove', {id:product.id}) }}" class="btn btn-outline-danger">Supprimer</a>
+                {% if is_granted('ROLE_VENDEUR') %}
+                    <a href="{{ path('app_product_update', {id:product.id}) }}" class="btn btn-outline-warning">Modifier</a>
+                    <a href="{{ path('app_product_remove', {id:product.id}) }}" class="btn btn-outline-danger">Supprimer</a>
+                {% endif %}
 			  </td>
 			</tr>
         {% endfor %}
@@ -27,3 +29,23 @@
 	</table>
 	
 {% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
