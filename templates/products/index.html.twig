@@ -3,31 +3,30 @@
 {% block body %}
     <h1>Liste des produits</h1>
 
-	<table class="table table-hover">
-	  <thead>
-		<tr>
-		  <th scope="col">Nom</th>
-		  <th scope="col">Prix</th>
-		  <th scope="col">Actions</th>
-		</tr>
-	  </thead>
-	  <tbody>
-		{% for product in products %}
-			<tr>
-			  <td>{{ product.name | capitalize }}</td>
-			  <td>{{ product.price }}</td>
-			  <td>
-				<a href="{{ path('app_product_show', { id : product.id }) }}" class="btn btn-outline-info" >Détail</a>
-                {% if is_granted('ROLE_VENDEUR') %}
-                    <a href="{{ path('app_product_update', {id:product.id}) }}" class="btn btn-outline-warning">Modifier</a>
-                    <a href="{{ path('app_product_remove', {id:product.id}) }}" class="btn btn-outline-danger">Supprimer</a>
-                {% endif %}
-			  </td>
-			</tr>
-        {% endfor %}
-	  </tbody>
-	</table>
-	
+    {% for paquetDe3Produits in pagination | batch('3') %}
+        <div class="card-deck">
+            {% for product in paquetDe3Produits %}
+                <div class="card">
+                    <!--img class="card-img-top" src=".../100px200/" alt="Card image cap"-->
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name | capitalize }}</h5>
+                        <p class="card-text">{{ product.description | slice(0 ,100) }}...</p>
+                        <p class="card-text">
+                            <a href="{{ path('app_product_show', { id : product.id }) }}" class="btn btn-outline-info" >Détail</a>
+                            {% if is_granted('ROLE_VENDEUR') %}
+                                <a href="{{ path('app_product_update', {id:product.id}) }}" class="btn btn-outline-warning">Modifier</a>
+                                <a href="{{ path('app_product_remove', {id:product.id}) }}" class="btn btn-outline-danger">Supprimer</a>
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+
+    <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+    </div>
 {% endblock %}
 
 

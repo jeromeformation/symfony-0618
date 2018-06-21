@@ -6,6 +6,7 @@ use App\Entity\Categories;
 use App\Entity\Product;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use Faker\ORM\Doctrine\Populator;
 
 class AppFixtures extends Fixture
 {
@@ -17,24 +18,38 @@ class AppFixtures extends Fixture
      */
     public function load(ObjectManager $manager)
     {
-        // Création d'une catégorie
-        $category = new Categories();
-        $category->setName('Confort');
+        // On récupère les instances de fonctionnement de Faker
+        $generator = \Faker\Factory::create('fr_FR');
+        $populator = new Populator($generator, $manager);
 
-        // Création de 300 produits
-        for($i=0;$i<300;$i++) {
-            // Attribution de valeurs à l'instance de produit
-            $product = new Product();
-            $product->setName('Hamac');
-            $product->setDescription('Composé de tissu ou de plastique, le Hamac est facile à transporter. Il peut servir à se reposer ou passer un bon moment dans la forêt. Pensez à prendre des cordes pour l\'attacher ;)');
-            $product->setPrice(15.99);
-            $product->setCategorie($category);
+        // On créé les données
 
-            // Préparation de la requête SQL du produit courant
-            $manager->persist($product);
-        }
+        /****************************************************************/
+        /*****                  LES CATEGORIES                     ******/
+        /****************************************************************/
+        $populator->addEntity(Categories::class, 20, [
+            'name' => function() use ($generator) {
+                return $generator->sentence(1);
+            }
+        ]);
 
-        // Exécution de l'ensemble des requêtes SQL
-        $manager->flush();
+        /****************************************************************/
+        /*****                     LES PRODUITS                   ******/
+        /****************************************************************/
+        $populator->addEntity(Product::class, 300, [
+            'price' => function() use ($generator) {
+                return $generator->randomFloat(2, 0, 99999999.99);
+            },
+            'name' => function() use ($generator) {
+                return $generator->sentence(3);
+            },
+            'description' => function() use ($generator) {
+                return $generator->text(1500);
+            }
+        ]);
+
+        // On sauvegarde les données
+        $populator->execute();
     }
 }
+

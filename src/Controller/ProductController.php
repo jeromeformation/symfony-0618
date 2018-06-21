@@ -24,20 +24,30 @@ class ProductController extends Controller
     /**
      * Liste les différents produits
      * @Route("/produits")
+     * @param Request $request
      * @return Response
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        /* Récupération des produits */
-        // On récupère le Repository
-        $repository = $this->getDoctrine()
-            ->getRepository(Product::class);
-        // On récupère les produits
-        $products = $repository->findAll();
+        // On récupère le requête pour le paginateur
+        $query = $this->getDoctrine()
+            ->getRepository(Product::class)
+            ->findAllQuery()
+        ;
 
-        // Renvoi les produits à la vue
+        // On récupère le paginateur
+        $paginateur = $this->get('knp_paginator');
+
+        // On créé la pagination
+        $pagination = $paginateur->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            12
+        );
+
+        // Renvoi des produits à la vue
         return $this->render('products/index.html.twig', [
-                'products' => $products
+                'pagination' => $pagination
             ]
         );
     }

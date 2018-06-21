@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -99,6 +100,15 @@ class ProductRepository extends ServiceEntityRepository
         ;
 
         return $query->getOneOrNullResult();
+    }
+
+    /**
+     * Retourne la requête correspondant au findAll
+     * @return Query
+     */
+    public function findAllQuery(): Query
+    {
+        return $this->createQueryBuilder('p')->getQuery();
     }
 
 //    /**
