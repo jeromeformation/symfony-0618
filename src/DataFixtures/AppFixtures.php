@@ -45,6 +45,9 @@ class AppFixtures extends Fixture
             },
             'description' => function() use ($generator) {
                 return $generator->text(1500);
+            },
+            'imageName' => function() {
+                return 'coffee.jpg';
             }
         ]);
 

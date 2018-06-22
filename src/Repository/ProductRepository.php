@@ -108,7 +108,10 @@ class ProductRepository extends ServiceEntityRepository
      */
     public function findAllQuery(): Query
     {
-        return $this->createQueryBuilder('p')->getQuery();
+        return $this->createQueryBuilder('p')
+            ->where('p.isPublished = 1')
+            ->orderBy('p.createdAt', 'DESC')
+            ->getQuery();
     }
 
 //    /**

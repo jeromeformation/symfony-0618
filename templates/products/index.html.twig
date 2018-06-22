@@ -7,7 +7,8 @@
         <div class="card-deck">
             {% for product in paquetDe3Produits %}
                 <div class="card">
-                    <!--img class="card-img-top" src=".../100px200/" alt="Card image cap"-->
+                    {#<img class="card-img-top" src="{{ asset('images/products/' ~ product.imageName ) }}" alt="Card image cap">#}
+                    <img class="card-img-top" src="{{ vich_uploader_asset(product, 'imageFile') }}" alt="Card image cap">
                     <div class="card-body">
                         <h5 class="card-title">{{ product.name | capitalize }}</h5>
                         <p class="card-text">{{ product.description | slice(0 ,100) }}...</p>

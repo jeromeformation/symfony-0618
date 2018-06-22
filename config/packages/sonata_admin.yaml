@@ -1,0 +1,24 @@
+sonata_admin:
+    title: 'Sonata Admin'
+    dashboard:
+        blocks:
+            -
+                position: left
+                type: sonata.admin.block.admin_list
+
+            -
+                type: sonata.block.service.text
+                settings:
+                    content: >
+                        <h1>Bienvenue l'administration</h1>
+                        <p>blablabla</p>
+                position: right
+
+
+sonata_block:
+    blocks:
+        sonata.admin.block.admin_list:
+            contexts:   [admin]
+        sonata.admin.block.search_result:
+            contexts:   [admin]
+        sonata.block.service.text:
